@@ -165,8 +165,8 @@ class App extends React.Component {
         
       
         {this.state.photoArray.map( item => {
-          return (<Row xs={1} md={2} className="g-4">
-          {Array.from({ length: 4 }).map((_, idx) => (
+          return (<Row xs={1} md={4} className="g-4">
+          {Array.from({ length: 1 }).map((_, idx) => (
           <Col>
           <Card>
             <Card.Img variant="top" src={item.url} />
