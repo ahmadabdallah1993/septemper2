@@ -21,7 +21,7 @@ class App extends React.Component {
       dataFlag: false,
       weath: [],
       photoArray: [],
-      mv:[]
+      mv: [],
     };
   }
 
@@ -52,57 +52,43 @@ class App extends React.Component {
     //   });
     // }
 
-
-    axios.get(URL).then(result => {
+    axios
+      .get(URL)
+      .then((result) => {
         this.setState({
-        display_name: result.data[0].display_name,
-        lat: result.data[0].lat,
-        lon: result.data[0].lon,
-        correctFlag: true,
-        cardFlag: true,
-        errorFlag: false,
+          display_name: result.data[0].display_name,
+          lat: result.data[0].lat,
+          lon: result.data[0].lon,
+          correctFlag: true,
+          cardFlag: true,
+          errorFlag: false,
+        });
+        this.weather(result.data[0].lat, result.data[0].lon);
+        this.siplashSplash(result.data[0].display_name);
+        this.moPoster(cityName);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      this.weather(result.data[0].lat, result.data[0].lon);
-      this.siplashSplash(result.data[0].display_name);
-      this.moPoster(cityName)
-    }).catch(error =>{
-      console.log(error)
-    })
-
-
-
-
-
-   
 
     //ahmad
   };
 
-
-
-
-  moPoster = (item) =>{
+  moPoster = (item) => {
     const URL = `http://localhost:3005/movie?searchMovie=${item}`;
 
-    axios.get(URL).then(result =>{
-      console.log(result.data)
-      this.setState({
-        mv:result.data
+    axios
+      .get(URL)
+      .then((result) => {
+        console.log(result.data);
+        this.setState({
+          mv: result.data,
+        });
       })
-    }).catch(error =>{
-      console.log(error)
-    })
-  }
-
-
-
-
-
-
-
-
-
-
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   // async
   weather = (lat, lon) => {
@@ -129,18 +115,17 @@ class App extends React.Component {
     //   // console.log('---------------------',this.state.weath[0].date)
     // } catch {}
 
-
-    axios.get(url).then(result =>{
-      this.setState({
-        dataFlag: true,
-        weath: result.data,
+    axios
+      .get(url)
+      .then((result) => {
+        this.setState({
+          dataFlag: true,
+          weath: result.data,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    }).catch( error =>{
-      console.log(error)
-    })
-
-
-
   };
 
   //async
@@ -155,18 +140,18 @@ class App extends React.Component {
     //   console.log(gPhoto.data);
     // } catch {}
 
-
-    axios.get(URl).then(result =>{
-      this.setState({
-            photoArray: result.data,
-          });
-    }).catch(error =>{
-      console.log(error)
-    })
-
-
+    axios
+      .get(URl)
+      .then((result) => {
+        this.setState({
+          photoArray: result.data,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-
+  
   render() {
     return (
       <div>
@@ -255,7 +240,10 @@ class App extends React.Component {
                   <Col>
                     <Card>
                       <Card.Title>{item.title}</Card.Title>
-                      <Card.Img variant="top" src= {`https://image.tmdb.org/t/p/w500/${item.backdrop_path}`} />
+                      <Card.Img
+                        variant="top"
+                        src={`https://image.tmdb.org/t/p/w500/${item.backdrop_path}`}
+                      />
                       <Card.Body>
                         <Card.Title></Card.Title>
                         <Card.Text>Number of likes: {item.overview}</Card.Text>
