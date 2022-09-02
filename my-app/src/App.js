@@ -4,6 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,7 +19,8 @@ class App extends React.Component {
       correctFlag: false,
       cardFlag: false,
       dataFlag: false,
-      weath: []
+      weath: [],
+      photoArray: []
     };
   }
 
@@ -39,19 +42,16 @@ class App extends React.Component {
         correctFlag: true,
         cardFlag: true,
         errorFlag: false,
-      
       });
-      
-      
     } catch {
       this.setState({
         errorFlag: true,
         correctFlag: false,
         cardFlag: false,
       });
-      
     }
     this.weather(resultResponce.data[0].lat, resultResponce.data[0].lon);
+    this.siplashSplash(cityName)
 
     //ahmad
   };
@@ -61,29 +61,44 @@ class App extends React.Component {
     try {
       const result = await axios.get(url);
       this.setState({
-        dataFlag:true,
-        weath:result.data
-      })
-      console.log(result.data)
-     
+        dataFlag: true,
+        weath: result.data,
+      });
+      console.log(result.data);
+
       // console.log('****************************',typeof result.data);
       // let a = JSON.stringify(result.data)
       // return a.map( item => item)
 
+      //  result.data.map( item => {
+      //     return (this.setState({
+      //       dataFlag: true,
+      //       weath: item
+      //     }))
+      //   })
 
-    //  result.data.map( item => {
-    //     return (this.setState({
-    //       dataFlag: true,
-    //       weath: item
-    //     }))
-    //   })
-      
       // console.log('---------------------',this.state.weath[0].date)
+    } catch {}
+  };
+
+
+  siplashSplash = async (n) => {
+    const URl = `http://localhost:3005/splashPhoto?photos=${n}`
     
-    } catch {
+    try{
+      const gPhoto = await axios.get(URl);
+      this.setState({
+        photoArray: gPhoto.data
+      })
+      console.log(gPhoto.data)
+    }catch{
+      
 
     }
-  };
+    
+
+  }
+
 
   render() {
     return (
@@ -127,34 +142,56 @@ class App extends React.Component {
         )}
         {this.state.errorFlag && <h4>Error: {this.state.error}</h4>}
 
-        
-  
-    {this.state.dataFlag &&  <Card className="bg-dark text-white">
-     
-      
-        <Card.Title>Forcast</Card.Title>
-        {/* <Card.Text>item: {this.state.weath[0].date}</Card.Text> */}
+        {this.state.dataFlag && (
+          <Card className="bg-dark text-white">
+            <Card.Title>Forcast for three days: </Card.Title>
 
-      {this.state.weath.map( item => {
-        return(
-          <div><Card.Text>{item.date}</Card.Text>
-          <Card.Text>{item.description}</Card.Text></div>
-        )
-        
-        
-      })} 
-        
-        <Card.Text>Last updated 3 mins ago</Card.Text>
-    </Card>}
-
-        
-
-        
-
-         
-        
+            {this.state.weath.map((item) => {
+              return (
+                <>
+                <br></br>
+                  <Card.Text>Date: {item.date}</Card.Text>
+                  <Card.Text>Description: {item.description}</Card.Text>
+                  <br></br>
+                  </>
+              );
+            })}
+          </Card>
+        )}
 
         <br></br>
+
+        <>
+        
+      
+        {this.state.photoArray.map( item => {
+          return (<Row xs={1} md={2} className="g-4">
+          {Array.from({ length: 4 }).map((_, idx) => (
+          <Col>
+          <Card>
+            <Card.Img variant="top" src={item.url} />
+            <Card.Body>
+              <Card.Title></Card.Title>
+              <Card.Text>
+                {item.likes}
+              </Card.Text>
+            </Card.Body>
+          </Card>
+          
+        </Col>
+        
+      ))}
+       </Row>)
+        })}
+       
+        
+        </>
+
+
+
+
+
+
       </div>
     );
   }
