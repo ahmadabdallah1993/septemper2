@@ -250,12 +250,12 @@ class App extends React.Component {
         <>
           {this.state.mv.map((item) => {
             return (
-              <Row xs={1} md={1} className="g-4">
+              <Row xs={1} md={4} className="g-4">
                 {Array.from({ length: 1 }).map((_, idx) => (
                   <Col>
                     <Card>
                       <Card.Title>{item.title}</Card.Title>
-                      <Card.Img variant="top" src={item.backdrop_path} />
+                      <Card.Img variant="top" src= {`https://image.tmdb.org/t/p/w500/${item.backdrop_path}`} />
                       <Card.Body>
                         <Card.Title></Card.Title>
                         <Card.Text>Number of likes: {item.overview}</Card.Text>
