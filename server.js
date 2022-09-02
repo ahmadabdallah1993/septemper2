@@ -41,11 +41,11 @@ server.get("/weatherLocalApi", (req, res) => {
 
 // }  //function or class and inside it constructor
 
-class Forcast{
-  constructor(item){
+function Forcast(item){
+  
     this.date =  item.valid_date;
     this.description = item.weather.description;
-  }
+  
 }
 
 

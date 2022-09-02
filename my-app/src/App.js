@@ -27,9 +27,9 @@ class App extends React.Component {
     const cityName = event.target.city.value;
     const key = "pk.d63f789567346be0d16e65b136ea44aa";
     const URL = `https://us1.locationiq.com/v1/search?key=${key}&q=${cityName}&format=json`;
-
+    let resultResponce;
     try {
-      let resultResponce = await axios.get(URL);
+      resultResponce = await axios.get(URL);
       // console.log(resultResponce.data[0].lat);
 
       this.setState({
@@ -39,15 +39,19 @@ class App extends React.Component {
         correctFlag: true,
         cardFlag: true,
         errorFlag: false,
+      
       });
-      this.weather(resultResponce.data[0].lat, resultResponce.data[0].lon);
+      
+      
     } catch {
       this.setState({
         errorFlag: true,
         correctFlag: false,
         cardFlag: false,
       });
+      
     }
+    this.weather(resultResponce.data[0].lat, resultResponce.data[0].lon);
 
     //ahmad
   };
@@ -56,17 +60,25 @@ class App extends React.Component {
     const url = `http://localhost:3005/weatherLocalApi?lat=${lat}&lon=${lon}`;
     try {
       const result = await axios.get(url);
-     
-      // console.log(result.data);
-      
-      result.data.map( item => {
-        this.setState({
-          dataFlag: true,
-          weath: this.state.weath.push(item)
-        })
+      this.setState({
+        dataFlag:true,
+        weath:result.data
       })
+      console.log(result.data)
+     
+      // console.log('****************************',typeof result.data);
+      // let a = JSON.stringify(result.data)
+      // return a.map( item => item)
+
+
+    //  result.data.map( item => {
+    //     return (this.setState({
+    //       dataFlag: true,
+    //       weath: item
+    //     }))
+    //   })
       
-      console.log(this.state.weath[0].date)
+      // console.log('---------------------',this.state.weath[0].date)
     
     } catch {
 
@@ -115,17 +127,22 @@ class App extends React.Component {
         )}
         {this.state.errorFlag && <h4>Error: {this.state.error}</h4>}
 
-        {this.state.dataFlag && 
+        
   
-    <Card className="bg-dark text-white">
+    {this.state.dataFlag &&  <Card className="bg-dark text-white">
      
       
         <Card.Title>Forcast</Card.Title>
-        
+        {/* <Card.Text>item: {this.state.weath[0].date}</Card.Text> */}
 
       {this.state.weath.map( item => {
-        return <Card.Text>{item.date}</Card.Text>
-      })}
+        return(
+          <div><Card.Text>{item.date}</Card.Text>
+          <Card.Text>{item.description}</Card.Text></div>
+        )
+        
+        
+      })} 
         
         <Card.Text>Last updated 3 mins ago</Card.Text>
     </Card>}
