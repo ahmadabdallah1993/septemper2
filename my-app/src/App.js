@@ -17,16 +17,7 @@ class App extends React.Component {
       correctFlag: false,
       cardFlag: false,
       dataFlag: false,
-      wind_dir: 0,
-      low_temp: 0,
-      max_temp: 0,
-      moonset_ts: 0,
-      datetime: "",
-      temp: 0,
-      min_temp: 0,
-      clouds_mid: 0,
-      clouds_low: 0,
-      description: "",
+      weath: []
     };
   }
 
@@ -65,21 +56,21 @@ class App extends React.Component {
     const url = `http://localhost:3005/weatherLocalApi?lat=${lat}&lon=${lon}`;
     try {
       const result = await axios.get(url);
-      console.log(result.data.data[0].wind_dir);
-      this.setState({
-        dataFlag: true,
-        wind_dir: result.data.data[0].wind_dir,
-        low_temp: result.data.data[0].low_temp,
-        max_temp: result.data.max_temp,
-        moonset_ts: result.data.data[0].moonset_ts,
-        datetime: result.data.data[0].datetime,
-        temp: result.data.data[0].temp,
-        min_temp: result.data.data[0].min_temp,
-        clouds_mid: result.data.data[0].clouds_mid,
-        clouds_low: result.data.data[0].clouds_low,
-        description: result.data.data[0].weather.description,
-      });
-    } catch {}
+     
+      // console.log(result.data);
+      
+      result.data.map( item => {
+        this.setState({
+          dataFlag: true,
+          weath: this.state.weath.push(item)
+        })
+      })
+      
+      console.log(this.state.weath[0].date)
+    
+    } catch {
+
+    }
   };
 
   render() {
@@ -124,26 +115,27 @@ class App extends React.Component {
         )}
         {this.state.errorFlag && <h4>Error: {this.state.error}</h4>}
 
-        {this.state.dataFlag && (
-          <Card className="bg-dark text-white">
-            
-              <Card.Title>Forcast: </Card.Title>
-              <Card.Text></Card.Text>
-              <Card.Text>wind_dir: {this.state.wind_dir}</Card.Text>
-              <Card.Text>low_temp: {this.state.low_temp}</Card.Text>
-              <Card.Text>max_temp: {this.state.max_temp}</Card.Text>
-              <Card.Text>moonset_ts: {this.state.moonset_ts}</Card.Text>
-              <Card.Text>
-              temp: {this.state.temp}
-              </Card.Text>
-              <Card.Text>datetime: {this.state.datetime}</Card.Text>
-              <Card.Text>min_temp: {this.state.min_temp}</Card.Text>
-              <Card.Text>clouds_mid: {this.state.clouds_mid}</Card.Text>
-              <Card.Text>clouds_low: {this.state.clouds_low}</Card.Text>
-              <Card.Text>description: {this.state.description}</Card.Text>
-            
-          </Card>
-        )}
+        {this.state.dataFlag && 
+  
+    <Card className="bg-dark text-white">
+     
+      
+        <Card.Title>Forcast</Card.Title>
+        
+
+      {this.state.weath.map( item => {
+        return <Card.Text>{item.date}</Card.Text>
+      })}
+        
+        <Card.Text>Last updated 3 mins ago</Card.Text>
+    </Card>}
+
+        
+
+        
+
+         
+        
 
         <br></br>
       </div>

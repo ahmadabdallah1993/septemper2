@@ -25,9 +25,29 @@ server.get("/weatherLocalApi", (req, res) => {
       return item;
     }
   });
-  console.log(dataW)
-  res.send(dataW);
+  // console.log(dataW)
+  try{
+    const weatherArr = dataW.data.map( item => new Forcast(item))
+    ///console.log(weatherArr); //to check it in terminal
+    //res.state(200).send(weatherArr);
+    res.send(weatherArr);
+  }catch{
+
+  }
+ 
 });
+
+// function Forcast(item){
+
+// }  //function or class and inside it constructor
+
+class Forcast{
+  constructor(item){
+    this.date =  item.valid_date;
+    this.description = item.weather.description;
+  }
+}
+
 
 server.listen(PORT, () => {
   console.log(`i am istineng on port ${PORT}`);
