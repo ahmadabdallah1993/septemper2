@@ -214,10 +214,10 @@ class App extends React.Component {
         <br></br>
 
         <>
+        <Row xs={1} md={4} className="g-4">
           {this.state.photoArray.map((item) => {
             return (
-              <Row xs={1} md={4} className="g-4">
-                {Array.from({ length: 1 }).map((_, idx) => (
+      
                   <Col>
                     <Card>
                       <Card.Img variant="top" src={item.url} />
@@ -227,16 +227,17 @@ class App extends React.Component {
                       </Card.Body>
                     </Card>
                   </Col>
-                ))}
-              </Row>
+              
             );
           })}
+          </Row>
         </>
         <>
+        <Row xs={1} md={4} className="g-4">
           {this.state.mv.map((item) => {
             return (
-              <Row xs={1} md={4} className="g-4">
-                {Array.from({ length: 1 }).map((_, idx) => (
+              
+                
                   <Col>
                     <Card>
                       <Card.Title>{item.title}</Card.Title>
@@ -250,10 +251,10 @@ class App extends React.Component {
                       </Card.Body>
                     </Card>
                   </Col>
-                ))}
-              </Row>
+              
             );
           })}
+          </Row>
         </>
       </div>
     );
